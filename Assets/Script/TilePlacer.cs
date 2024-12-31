@@ -31,7 +31,7 @@ public class TilePlacer : MonoBehaviour
         {
             for (int y = 0; y < _height; y++)
             {
-                Vector3Int tilePosition = new Vector3Int(x + xOffset, y + yOffset, 0);
+                Vector3Int tilePosition = new(x + xOffset, y + yOffset, 0);
 
                 TileBase tile = _waveCollapseFunction.GetTile(x, y);
                 _tilemap.SetTile(tilePosition, tile);
