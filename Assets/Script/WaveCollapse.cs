@@ -1,30 +1,34 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
-using System.Numerics;
-using System.Collections;
 
 public class WaveCollapse
 {
+    // Variables
     private Cell[,] _cells;
     private TileRule _selectedCell;
 
     public WaveCollapse(int width, int height, List<TileRule> tileRules)
     {
+        // Initialise 2D Cells of width and height
         _cells = new Cell[width, height];
 
-        // Initialise each cells
+        // Instantiate each cells
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
+                // By default, the cell should not be collapsed and we give it all N tiles
                 _cells[x, y] = new Cell(false, new List<TileRule>(tileRules));
             }
         }
     }
 
+    // Callers should only calls this function to get the TileBase.
+    // A for loop is required outside to construct the map.
     public TileBase GetTile(int x, int y)
     {
+        // Start collapsing the cell from x, y.
         Collapse(x, y);
         return _cells[x, y].Options[0].tile;
     }
@@ -37,22 +41,24 @@ public class WaveCollapse
         // Update selected cell
         _selectedCell = _cells[x, y].Options[RandomIndex];
 
-        // Collapse the cell
+        // Collapse the cell and update tile
         _cells[x, y].IsCollapsed = true;
         _cells[x, y].Options = new List<TileRule> { _selectedCell };
-
+        
+        // Start propagating neighboring cells
         Propagate(x, y);
     }
 
     private void Propagate(int x, int y)
     {
-        // Define the four possible directions (up, down, left, right)
+        // Define directions
         Vector2Int[] directions = new Vector2Int[] { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
 
         // Iterate through each direction
         foreach (Vector2Int direction in directions)
         {
-            int newX = x + direction.x;
+            // Calculate offsets
+            int newX = x + direction.x; 
             int newY = y + direction.y;
 
             // Check if the new coordinates are within bounds
