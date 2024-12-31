@@ -10,13 +10,13 @@ public class MapEditor : Editor
         // Target script
         TilePlacer tilePlacer = (TilePlacer)target;
 
-        // Draw default inspector fields
-        DrawDefaultInspector();
-
         // If AutoUpdate is true, generate the map when the inspector is updated
-        if (tilePlacer.AutoUpdate)
+        if (DrawDefaultInspector())
         {
-            tilePlacer.GenerateMap();
+            if (tilePlacer.AutoUpdate)
+            {
+                tilePlacer.GenerateMap();
+            }
         }
 
         if (GUILayout.Button("Generate"))

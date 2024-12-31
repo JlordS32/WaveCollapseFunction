@@ -2,19 +2,19 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 
-[ExecuteInEditMode]
 public class TilePlacer : MonoBehaviour
 {
     [SerializeField] private int _width;
     [SerializeField] private int _height;
     [SerializeField] private Tilemap _tilemap;
     [SerializeField] private List<TileRule> _tileRules;
+    [SerializeField] private bool _autoUpdate;
     
     // References
     private WaveCollapse _waveCollapseFunction;
     
-    // Properties    
-    public bool AutoUpdate { get; private set; }
+    // Properties
+    public bool AutoUpdate { get { return _autoUpdate; } }
 
     // Method to generate the tilemap
     public void GenerateMap()
