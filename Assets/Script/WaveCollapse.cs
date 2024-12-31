@@ -32,7 +32,7 @@ public class WaveCollapse
 
     public TileBase[,] GetTiles()
     {
-        while (!isComplete())
+        while (!IsComplete())
         {
             // Find the cell with the lowest entropy that is not collapsed
             (int x, int y) = FindLowestEntropyCell();
@@ -69,7 +69,7 @@ public class WaveCollapse
     }
 
 
-    private bool isComplete()
+    private bool IsComplete()
     {
         for (int x = 0; x < _width; x++)
         {
