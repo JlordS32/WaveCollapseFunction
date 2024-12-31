@@ -1,17 +1,23 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
+using TMPro;
 
 public class WaveCollapse
 {
     // Variables
     private Cell[,] _cells;
     private TileRule _selectedCell;
+    private int _width, _height;
+    private TileBase[,] _tiles;
 
     public WaveCollapse(int width, int height, List<TileRule> tileRules)
     {
         // Initialise 2D Cells of width and height
         _cells = new Cell[width, height];
+        _tiles = new TileBase[width, height];
+        _width = width;
+        _height = height;
 
         // Instantiate each cells
         for (int x = 0; x < width; x++)
@@ -24,13 +30,59 @@ public class WaveCollapse
         }
     }
 
-    // Callers should only calls this function to get the TileBase.
-    // A for loop is required outside to construct the map.
-    public TileBase GetTile(int x, int y)
+    public TileBase[,] GetTiles()
     {
-        // Start collapsing the cell from x, y.
-        Collapse(x, y);
-        return _cells[x, y].Options[0].tile;
+        while (!isComplete())
+        {
+            // Find the cell with the lowest entropy that is not collapsed
+            (int x, int y) = FindLowestEntropyCell();
+
+            // Collapse the selected cell
+            Collapse(x, y);
+
+            // Update the tiles array
+            _tiles[x, y] = _cells[x, y].Options[0].tile;
+        }
+
+        return _tiles;
+    }
+
+    private (int, int) FindLowestEntropyCell()
+    {
+        int minEntropy = int.MaxValue;
+        int selectedX = -1, selectedY = -1;
+
+        for (int x = 0; x < _width; x++)
+        {
+            for (int y = 0; y < _height; y++)
+            {
+                if (!_cells[x, y].IsCollapsed && _cells[x, y].Entropy < minEntropy)
+                {
+                    minEntropy = _cells[x, y].Entropy;
+                    selectedX = x;
+                    selectedY = y;
+                }
+            }
+        }
+
+        return (selectedX, selectedY);
+    }
+
+
+    private bool isComplete()
+    {
+        for (int x = 0; x < _width; x++)
+        {
+            for (int y = 0; y < _height; y++)
+            {
+                if (!_cells[x, y].IsCollapsed)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     private void Collapse(int x, int y)
@@ -44,7 +96,7 @@ public class WaveCollapse
         // Collapse the cell and update tile
         _cells[x, y].IsCollapsed = true;
         _cells[x, y].Options = new List<TileRule> { _selectedCell };
-        
+
         // Start propagating neighboring cells
         Propagate(x, y);
     }
@@ -58,7 +110,7 @@ public class WaveCollapse
         foreach (Vector2Int direction in directions)
         {
             // Calculate offsets
-            int newX = x + direction.x; 
+            int newX = x + direction.x;
             int newY = y + direction.y;
 
             // Check if the new coordinates are within bounds
