@@ -1,14 +1,13 @@
 using UnityEngine;
-using System.Collections;
 using UnityEditor;
 
-[CustomEditor(typeof(TilePlacer))]
+[CustomEditor(typeof(TileManager))]
 public class MapEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         // Target script
-        TilePlacer tilePlacer = (TilePlacer)target;
+        TileManager tilePlacer = (TileManager)target;
 
         // If AutoUpdate is true, generate the map when the inspector is updated
         if (DrawDefaultInspector())

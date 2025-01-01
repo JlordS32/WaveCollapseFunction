@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class TilePlacer : MonoBehaviour
+public class TileManager : MonoBehaviour
 {
     public enum Maptype { Perlin, Temperature, Precipitation };
     [SerializeField] private Maptype _mapType;

@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[System.Serializable]
 [CreateAssetMenu(fileName = "New PerlinMapGenerator", menuName = "NoiseGenerators/Temperature")]
+[System.Serializable]
 public class TemperatureMapGenerator : NoiseGenerator
 {
     [Header("Temperature Map Params")]
