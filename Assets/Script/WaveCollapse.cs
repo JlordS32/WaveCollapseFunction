@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
-using TMPro;
 
 public class WaveCollapse
 {
@@ -87,11 +86,25 @@ public class WaveCollapse
 
     private void Collapse(int x, int y)
     {
-        // Get a random number
-        int RandomIndex = Random.Range(0, _cells[x, y].Options.Count);
+        // Calculate cumulative probabilities
+        float totalWeight = 0f;
+        foreach (TileRule option in _cells[x, y].Options)
+        {
+            totalWeight += option.probability;
+        }
 
-        // Update selected cell
-        _selectedCell = _cells[x, y].Options[RandomIndex];
+        // Choose a random value within the cumulative weight
+        float randomValue = Random.Range(0, totalWeight);
+        float cumulativeWeight = 0f;
+        foreach (TileRule option in _cells[x, y].Options)
+        {
+            cumulativeWeight += option.probability;
+            if (randomValue <= cumulativeWeight)
+            {
+                _selectedCell = option;
+                break;
+            }
+        }
 
         // Collapse the cell and update tile
         _cells[x, y].IsCollapsed = true;
