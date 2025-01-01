@@ -3,22 +3,18 @@ using UnityEngine.Tilemaps;
 using System.Collections.Generic;
 
 [System.Serializable]
-public class PerlinMapGenerator
+public class PerlinMapGenerator : NoiseGenerator
 {
-    // Serialized Fields
-    [SerializeField] private float _noiseScale;
+    [Header ("Perlin Map Generator Params")]
     [SerializeField] private TerrainType[] _terrainType;
-    
-    // Variables
-    private TileBase[,] _tiles;
 
-    public TileBase[,] Generate(int width, int height)
+    public override Tile[,] Generate(int width, int height)
     {
         // Generate the Perlin noise map
-        float[,] noiseMap = Noise.GenerateNoiseMap(width, height, _noiseScale);
+        float[,] noiseMap = Noise.GenerateNoiseMap(width, height, _seed, _noiseScale, _octaves, _lacunarity, _persistance, _offset);
 
-        // Initialize the TileBase array
-        _tiles = new TileBase[width, height];
+        // Initialize the Tile array
+        _tiles = new Tile[width, height];
 
         // Map the noise values to terrain types
         for (int x = 0; x < width; x++)
@@ -41,12 +37,12 @@ public class PerlinMapGenerator
 
         return _tiles;
     }
-
 }
 
 [System.Serializable]
-public struct TerrainType {
+public struct TerrainType
+{
     public string Name;
     public float NoiseHeight;
-    public TileBase tile;
+    public Tile tile;
 }
