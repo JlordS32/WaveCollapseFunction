@@ -1,12 +1,11 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(fileName = "New PerlinMapGenerator", menuName = "NoiseGenerators/Temperature")]
 [System.Serializable]
 public class TemperatureMapGenerator : NoiseGenerator
 {
     [Header("Temperature Map Params")]
-    [SerializeField] private WeatherZone[] _weatherZones;
+    [SerializeField] private WeatherZoneObject _weatherZones;
     [SerializeField] private int _minTemperature;
     [SerializeField] private int _maxTemperature;
 
@@ -21,6 +20,7 @@ public class TemperatureMapGenerator : NoiseGenerator
 
         // Initialize the Tile array
         _tiles = new Tile[width, height];
+        _tempMap = new float[width, height];
 
         // Map the noise values to terrain types
         for (int x = 0; x < width; x++)
@@ -31,7 +31,7 @@ public class TemperatureMapGenerator : NoiseGenerator
                 // Calculate the interporation between min and max temperatured base on noise value.
                 float temperature = Mathf.Lerp(_minTemperature, _maxTemperature, currentHeight);
 
-                foreach (WeatherZone zone in _weatherZones)
+                foreach (WeatherZone zone in _weatherZones.weatherZones)
                 {
                     if (temperature <= zone.temperature)
                     {
@@ -45,11 +45,4 @@ public class TemperatureMapGenerator : NoiseGenerator
 
         return _tiles;
     }
-}
-
-[System.Serializable]
-public struct WeatherZone
-{
-    public float temperature;
-    public Tile tile;
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(fileName = "New PerlinMapGenerator", menuName = "NoiseGenerators/Precipitation")]
+
 [System.Serializable]
 public class PrecipitationMapGenerator : NoiseGenerator
 {
