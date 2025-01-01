@@ -4,10 +4,14 @@ using UnityEngine.Tilemaps;
 [System.Serializable]
 public class TemperatureMapGenerator : NoiseGenerator
 {
-    [Header ("Temperature Map Params")]
+    [Header("Temperature Map Params")]
     [SerializeField] private WeatherZone[] _weatherZones;
     [SerializeField] private int _minTemperature;
     [SerializeField] private int _maxTemperature;
+
+    // Variables
+    private float[,] _tempMap;
+    public float[,] TemperatureMap { get { return _tempMap; } }
 
     public override Tile[,] Generate(int width, int height)
     {
@@ -25,10 +29,13 @@ public class TemperatureMapGenerator : NoiseGenerator
                 float currentHeight = noiseMap[x, y];
                 // Calculate the interporation between min and max temperatured base on noise value.
                 float temperature = Mathf.Lerp(_minTemperature, _maxTemperature, currentHeight);
-                
-                foreach (WeatherZone zone in _weatherZones) {
-                    if (temperature <= zone.temperature) {
+
+                foreach (WeatherZone zone in _weatherZones)
+                {
+                    if (temperature <= zone.temperature)
+                    {
                         _tiles[x, y] = zone.tile;
+                        _tempMap[x, y] = temperature;
                         break;
                     }
                 }
