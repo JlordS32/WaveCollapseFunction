@@ -6,6 +6,10 @@ public class PerlinMapGenerator : NoiseGenerator
 {
     [Header ("Perlin Map Generator Params")]
     [SerializeField] private TerrainType[] _terrainType;
+    
+    // Temperature map
+    private float[,] _temperatureMap;
+    public void SetTemperatureMap(float[,] temperatureMap) => _temperatureMap = temperatureMap;
 
     public override Tile[,] Generate(int width, int height)
     {
@@ -44,4 +48,8 @@ public struct TerrainType
     public string Name;
     public float NoiseHeight;
     public Tile tile;
+}
+
+public struct Biome {
+    public float temperature;
 }

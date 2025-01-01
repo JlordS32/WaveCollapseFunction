@@ -39,7 +39,11 @@ public class TileManager : MonoBehaviour
         Tile[,] tiles;
         switch(_mapType) {
             case var _ when _mapType == Maptype.Perlin:
+                if (_temperatureMapGenerator.TemperatureMap == null) {
+                    _temperatureMapGenerator.Generate(_width, _height);
+                }
                 tiles = _perlinMapGenerator.Generate(_width, _height);
+                _perlinMapGenerator.SetTemperatureMap(_temperatureMapGenerator.TemperatureMap);
                 break;
             case var _ when _mapType == Maptype.Temperature:
                 tiles = _temperatureMapGenerator.Generate(_width, _height);
