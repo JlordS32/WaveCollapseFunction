@@ -3,7 +3,7 @@ using UnityEngine.Tilemaps;
 
 public class TilePlacer : MonoBehaviour
 {
-    public enum Maptype { Perlin, Temperature };
+    public enum Maptype { Perlin, Temperature, Precipitation };
     [SerializeField] private Maptype _mapType;
     [SerializeField] private int _width;
     [SerializeField] private int _height;
@@ -13,6 +13,7 @@ public class TilePlacer : MonoBehaviour
     // References
     [SerializeField] private PerlinMapGenerator _perlinMapGenerator;
     [SerializeField] private TemperatureMapGenerator _temperatureMapGenerator;
+    [SerializeField] private PrecipitationMapGenerator _precipitationMapGenerator;
 
     // Properties
     public bool AutoUpdate { get { return _autoUpdate; } }
@@ -21,6 +22,7 @@ public class TilePlacer : MonoBehaviour
         // Constructor initialisation.
         _perlinMapGenerator = new PerlinMapGenerator();
         _temperatureMapGenerator = new TemperatureMapGenerator();
+        _precipitationMapGenerator = new PrecipitationMapGenerator();
     }
 
     // Method to generate the tilemap
@@ -41,6 +43,9 @@ public class TilePlacer : MonoBehaviour
                 break;
             case var _ when _mapType == Maptype.Temperature:
                 tiles = _temperatureMapGenerator.Generate(_width, _height);
+                break;
+            case var _ when _mapType == Maptype.Precipitation:
+                tiles = _precipitationMapGenerator.Generate(_width, _height);
                 break;
             default:
                 tiles = new Tile[0, 0];

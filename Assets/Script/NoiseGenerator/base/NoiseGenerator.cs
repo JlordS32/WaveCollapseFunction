@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[System.Serializable]
-public abstract class NoiseGenerator {
+public abstract class NoiseGenerator : ScriptableObject {
     [Header ("Base Noise Generator Params")]
     [SerializeField] protected float _noiseScale;
     [SerializeField] protected int _seed;

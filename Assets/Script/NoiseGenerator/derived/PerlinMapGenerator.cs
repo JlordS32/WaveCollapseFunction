@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections.Generic;
 
 [System.Serializable]
+[CreateAssetMenu(fileName = "New PerlinMapGenerator", menuName = "NoiseGenerators/Perlin")]
 public class PerlinMapGenerator : NoiseGenerator
 {
     [Header ("Perlin Map Generator Params")]
